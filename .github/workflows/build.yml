@@ -12,8 +12,8 @@ jobs:
     runs-on: ubuntu-20.04
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    - uses: uraimo/run-on-arch-action@v2
-      name: checkout kernel repo selected
+    - name: checkout kernel repo selected
+      id: Build kernel with new logo
       shell: bash {0}
       run: |
         apt -y update
@@ -31,7 +31,8 @@ jobs:
         wget https://github.com/christianhaitian/rk3566_logo_generator/blob/5056d7c0ca1a6c0e694f717a671616d4e3eb70b7/cod_ghost.png
         pngtopnm cod_ghost.png | ppmquant 224 | pnmnoraw > drivers/video/logo/logo_linux_clut224.ppm
         make ARCH=arm64 rk3566_optimized_linux_defconfig && make ARCH=arm64 KERNEL_DTS=rk3566 KERNEL_CONFIG=rk3566_optimized_linux_defconfig
-    - uses: actions/upload-artifact@v3
+    - name: Get kernel artifact
+      uses: actions/upload-artifact@v3
       with:
         name: image
         path: arch/arm64/boot/Image
