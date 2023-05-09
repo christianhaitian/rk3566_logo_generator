@@ -13,7 +13,7 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     - name: checkout kernel repo selected
-      id: Build kernel with new logo
+      id: Build_kernel_with_new_logo
       shell: bash {0}
       run: |
         apt -y update
