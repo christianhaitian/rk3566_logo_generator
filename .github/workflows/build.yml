@@ -12,39 +12,26 @@ jobs:
     runs-on: ubuntu-20.04
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-   # Time to pull the proper branch of the retroarch-cores repo to start the build process
-      #- uses: actions/checkout@v3
-        #with:
-          #ref: ${{ github.ref_name }}
-          #fetch-depth: 1
-      #- name: checkout kernel
-        #uses: actions/checkout@v3
-        #with:
-          #repository: christianhaitian/rg503Kernel
-          #ref: master
-          #fetch-depth: 0
-      - uses: uraimo/run-on-arch-action@v2
-        name: checkout kernel repo selected
-        with:
-          # arch: aarch64
-          distro: ubuntu20.04
-          run: |
-            apt -y update
-            apt -y install build-essential git lzop build-essential gcc bc libncurses5-dev libc6-i386 lib32stdc++6 zlib1g:i386
-            if [[ ${GITHUB_REF##*/} == "master" ]]; then
-               whichgit="rg503Kernel"
-            else
-               whichgit="RG353VKernel"
-            fi
-            git clone --depth=1 --recursive https://github.com/christianhaitian/${whichgit}.git
-            mkdir -p ./prebuilts/gcc/linux-x86/aarch64/
-            wget https://releases.linaro.org/components/toolchain/binaries/6.3-2017.05/aarch64-linux-gnu/gcc-linaro-6.3.1-2017.05-x86_64_aarch64-linux-gnu.tar.xz
-            tar Jxvf gcc-linaro-6.3.1-2017.05-x86_64_aarch64-linux-gnu.tar.xz -C ./prebuilts/gcc/linux-x86/aarch64/
-            cd ${whichgit}
-            wget https://github.com/christianhaitian/rk3566_logo_generator/blob/5056d7c0ca1a6c0e694f717a671616d4e3eb70b7/cod_ghost.png
-            pngtopnm cod_ghost.png | ppmquant 224 | pnmnoraw > drivers/video/logo/logo_linux_clut224.ppm
-            make ARCH=arm64 rk3566_optimized_linux_defconfig && make ARCH=arm64 KERNEL_DTS=rk3566 KERNEL_CONFIG=rk3566_optimized_linux_defconfig
-      - uses: actions/upload-artifact@v3
-        with:
-          name: image
-          path: arch/arm64/boot/Image
+    - uses: uraimo/run-on-arch-action@v2
+      name: checkout kernel repo selected
+      shell: bash {0}
+      run: |
+        apt -y update
+        apt -y install build-essential git lzop build-essential gcc bc libncurses5-dev libc6-i386 lib32stdc++6 zlib1g:i386 netpbm
+        if [[ ${GITHUB_REF##*/} == "master" ]]; then
+           whichgit="rg503Kernel"
+        else
+           whichgit="RG353VKernel"
+        fi
+        git clone --depth=1 --recursive https://github.com/christianhaitian/${whichgit}.git
+        mkdir -p ./prebuilts/gcc/linux-x86/aarch64/
+        wget https://releases.linaro.org/components/toolchain/binaries/6.3-2017.05/aarch64-linux-gnu/gcc-linaro-6.3.1-2017.05-x86_64_aarch64-linux-gnu.tar.xz
+        tar Jxvf gcc-linaro-6.3.1-2017.05-x86_64_aarch64-linux-gnu.tar.xz -C ./prebuilts/gcc/linux-x86/aarch64/
+        cd ${whichgit}
+        wget https://github.com/christianhaitian/rk3566_logo_generator/blob/5056d7c0ca1a6c0e694f717a671616d4e3eb70b7/cod_ghost.png
+        pngtopnm cod_ghost.png | ppmquant 224 | pnmnoraw > drivers/video/logo/logo_linux_clut224.ppm
+        make ARCH=arm64 rk3566_optimized_linux_defconfig && make ARCH=arm64 KERNEL_DTS=rk3566 KERNEL_CONFIG=rk3566_optimized_linux_defconfig
+    - uses: actions/upload-artifact@v3
+      with:
+        name: image
+        path: arch/arm64/boot/Image
