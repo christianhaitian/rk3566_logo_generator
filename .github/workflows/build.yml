@@ -37,10 +37,11 @@ jobs:
         cp ../cod_ghost.png .
         pngtopnm cod_ghost.png | ppmquant 224 | pnmnoraw > drivers/video/logo/logo_linux_clut224.ppm
         make ARCH=arm64 rk3566_optimized_linux_defconfig && make ARCH=arm64 KERNEL_DTS=rk3566 KERNEL_CONFIG=rk3566_optimized_linux_defconfig -j2
+        cp arch/arm64/boot/Image ../.
     - name: Get kernel artifact
       uses: actions/upload-artifact@v3
       with:
         name: image
-        path: /$whichgit/arch/arm64/boot/Image
+        path: Image
       env:
         whichgit: ${{ env.whichgit }}
