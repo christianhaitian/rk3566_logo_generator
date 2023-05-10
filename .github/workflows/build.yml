@@ -28,6 +28,7 @@ jobs:
         else
            whichgit="RG353VKernel"
         fi
+        echo "whichgit=$whichgit" >> $GITHUB_ENV
         git clone --depth=1 --recursive https://github.com/christianhaitian/${whichgit}.git
         mkdir -p ./prebuilts/gcc/linux-x86/aarch64/
         wget https://releases.linaro.org/components/toolchain/binaries/6.3-2017.05/aarch64-linux-gnu/gcc-linaro-6.3.1-2017.05-x86_64_aarch64-linux-gnu.tar.xz
@@ -41,3 +42,5 @@ jobs:
       with:
         name: image
         path: ${whichgit}/arch/arm64/boot/Image
+      env:
+        whichgit: ${{ env.whichgit }}
