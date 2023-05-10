@@ -40,4 +40,4 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: image
-        path: arch/arm64/boot/Image
+        path: ${whichgit}/arch/arm64/boot/Image
