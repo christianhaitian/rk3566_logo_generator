@@ -16,9 +16,9 @@ jobs:
       id: Build_kernel_with_new_logo
       shell: bash {0}
       run: |
-        apt -y update
-        apt -y install build-essential git lzop build-essential gcc bc libncurses5-dev libc6-i386 lib32stdc++6 zlib1g:i386 netpbm
-        if [[ ${GITHUB_REF##*/} == "master" ]]; then
+        sudo apt -y update
+        sudo apt -y install build-essential git lzop build-essential gcc bc libncurses5-dev libc6-i386 lib32stdc++6 zlib1g:i386 netpbm
+        if [[ ${GITHUB_REF##*/} == "main" ]]; then
            whichgit="rg503Kernel"
         else
            whichgit="RG353VKernel"
@@ -30,7 +30,7 @@ jobs:
         cd ${whichgit}
         wget https://github.com/christianhaitian/rk3566_logo_generator/blob/5056d7c0ca1a6c0e694f717a671616d4e3eb70b7/cod_ghost.png
         pngtopnm cod_ghost.png | ppmquant 224 | pnmnoraw > drivers/video/logo/logo_linux_clut224.ppm
-        make ARCH=arm64 rk3566_optimized_linux_defconfig && make ARCH=arm64 KERNEL_DTS=rk3566 KERNEL_CONFIG=rk3566_optimized_linux_defconfig
+        make ARCH=arm64 rk3566_optimized_linux_defconfig && make ARCH=arm64 KERNEL_DTS=rk3566 KERNEL_CONFIG=rk3566_optimized_linux_defconfig -j2
     - name: Get kernel artifact
       uses: actions/upload-artifact@v3
       with:
