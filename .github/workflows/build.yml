@@ -33,7 +33,7 @@ jobs:
       shell: bash {0}
       run: |
         # Verify that html link provided is to a file ending in .png
-        if [[ "${{ github.event.inputs.picture_link }}" != *.png ]] || [[ "${{ github.event.inputs.picture_link }}" != *.PNG ]]; then
+        if [[ "${{ github.event.inputs.picture_link }}" != *.png ]] && [[ "${{ github.event.inputs.picture_link }}" != *.PNG ]]; then
           echo "::error::Link doesn't seem to contain a .png file"
           exit 1
         fi
