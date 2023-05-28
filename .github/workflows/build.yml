@@ -55,8 +55,16 @@ jobs:
         tar Jxvf gcc-linaro-6.3.1-2017.05-x86_64_aarch64-linux-gnu.tar.xz -C ./prebuilts/gcc/linux-x86/aarch64/
         cd ${whichgit}
         wget -t 3 -T 60 --no-check-certificate "${{ github.event.inputs.picture_link }}" -O logo.png
+        if [ "$?" != "0" ]; then
+          echo "::error::Failed to get ${{ github.event.inputs.picture_link }}"
+          exit 1
+        fi
         #cp ../cod_ghost.png .
         pngtopnm logo.png | ppmquant 224 | pnmnoraw > drivers/video/logo/logo_linux_clut224.ppm
+        if [ "$?" != "0" ]; then
+          echo "::error::${{ github.event.inputs.picture_link }} is not a compatible png file"
+          exit 1
+        fi
         make ARCH=arm64 rk3566_optimized_linux_defconfig && make ARCH=arm64 KERNEL_DTS=rk3566 KERNEL_CONFIG=rk3566_optimized_linux_defconfig -j2
         cp arch/arm64/boot/Image ../.
     - name: Get kernel artifact
