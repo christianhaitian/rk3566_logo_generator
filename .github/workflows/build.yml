@@ -13,6 +13,9 @@ on:
         - RG353M/V/VS
         - RG503
         - RK2023
+      picture_link:
+        description: 'HTML link to png file'
+        required: true
 jobs:
   # This workflow contains a single job.
   build:
@@ -29,6 +32,11 @@ jobs:
       id: Build_kernel_with_new_logo
       shell: bash {0}
       run: |
+        # Verify that html link provided is to a file ending in .png
+        if [[ "${{ github.event.inputs.picture_link }}" != *.png ]] || [[ "${{ github.event.inputs.picture_link }}" != *.PNG ]]; then
+          echo "::error::Link doesn't seem to contain a .png file"
+          exit 1
+        fi
         sudo apt -y update
         sudo apt -y install build-essential git lzop build-essential gcc bc libncurses5-dev libc6-i386 lib32stdc++6 zlib1g netpbm
         if [[ "${{ github.event.inputs.device_unit }}" == "RG353M/V/VS" ]]; then
@@ -46,8 +54,9 @@ jobs:
         wget https://releases.linaro.org/components/toolchain/binaries/6.3-2017.05/aarch64-linux-gnu/gcc-linaro-6.3.1-2017.05-x86_64_aarch64-linux-gnu.tar.xz
         tar Jxvf gcc-linaro-6.3.1-2017.05-x86_64_aarch64-linux-gnu.tar.xz -C ./prebuilts/gcc/linux-x86/aarch64/
         cd ${whichgit}
-        cp ../cod_ghost.png .
-        pngtopnm cod_ghost.png | ppmquant 224 | pnmnoraw > drivers/video/logo/logo_linux_clut224.ppm
+        wget -t 3 -T 60 --no-check-certificate "${{ github.event.inputs.picture_link }}" -O logo.png
+        #cp ../cod_ghost.png .
+        pngtopnm logo.png | ppmquant 224 | pnmnoraw > drivers/video/logo/logo_linux_clut224.ppm
         make ARCH=arm64 rk3566_optimized_linux_defconfig && make ARCH=arm64 KERNEL_DTS=rk3566 KERNEL_CONFIG=rk3566_optimized_linux_defconfig -j2
         cp arch/arm64/boot/Image ../.
     - name: Get kernel artifact
