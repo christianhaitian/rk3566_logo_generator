@@ -12,7 +12,7 @@ For adding your own boot logo for ArkOS for supported rk3566 devices
 7. Wait 15-20 minutes or so.  If all goes well, The workflow should end with a green checkmark.
 8. Click on the workflow and scroll down tot he Artifacts section.
 9. Click on the image file and download it.
-10. Open the image.zip file and transfer the Image (kernel) file in it to the fat32 boot partition on your sd card overwriting the existing one.
+10. Open the downloaded image .zip file and transfer the Image (kernel) file in it to the fat32 boot partition on your sd card overwriting the existing one.
 11. Boot your device and verify your logo appears during boot.
 
 Notes:
