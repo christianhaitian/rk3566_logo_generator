@@ -4,16 +4,17 @@ For adding your own boot logo for ArkOS for supported rk3566 devices
 # Instructions for creating a kernel with your custom logo
 1. Fork this repository
 2. From your forked repository, go to Actions.
-3. Click on **ArkOS Kernel with Logo Generator** under Actions on the left side of the screen.
-4. On the right side, Click on Run workflow.
-5. Select your Device
-6. Paste the HTML link to the png image that should be downloaded to generate the current kernel with your preferred logo.
+3. Enable Workflows.
+4. Click on **ArkOS Kernel with Logo Generator** under Actions on the left side of the screen.
+5. On the right side, Click on Run workflow.
+6. Select your Device.
+7. Paste the HTML link to the png image that should be downloaded to generate the current kernel with your preferred logo.
    - Images from [imgbb.com](https://github.com/christianhaitian/rk3566_logo_generator#uploading-png-images-to-imgbbcom) or [pasteboard.co](https://github.com/christianhaitian/rk3566_logo_generator#uploading-png-images-to-pasteboardco) are recommended for this process.  See instructions below about how to use either free site.
-7. Wait 15-20 minutes or so.  If all goes well, The workflow should end with a green checkmark.
-8. Click on the workflow and scroll down tot he Artifacts section.
-9. Click on the image file and download it.
-10. Open the downloaded image .zip file and transfer the Image (kernel) file in it to the fat32 boot partition on your sd card overwriting the existing one.
-11. Boot your device and verify your logo appears during boot.
+8. Wait 15-20 minutes or so.  If all goes well, The workflow should end with a green checkmark.
+9. Click on the workflow and scroll down tot he Artifacts section.
+10. Click on the image file and download it.
+11. Open the downloaded image .zip file and transfer the Image (kernel) file in it to the fat32 boot partition on your sd card overwriting the existing one.
+12. Boot your device and verify your logo appears during boot.
 
 Notes:
 - Only images in .png format will work and are possible for use in this process
