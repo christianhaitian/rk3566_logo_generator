@@ -54,7 +54,16 @@ jobs:
         wget https://releases.linaro.org/components/toolchain/binaries/6.3-2017.05/aarch64-linux-gnu/gcc-linaro-6.3.1-2017.05-x86_64_aarch64-linux-gnu.tar.xz
         tar Jxvf gcc-linaro-6.3.1-2017.05-x86_64_aarch64-linux-gnu.tar.xz -C ./prebuilts/gcc/linux-x86/aarch64/
         cd ${whichgit}
-        wget -t 3 -T 60 --no-check-certificate "${{ github.event.inputs.picture_link }}" -O logo.png
+        # Check to see if this is a pasteboard.co link
+        # If it is a pasteboard.co link
+        # we need to get the real logo link
+        if [[ "${{ github.event.inputs.picture_link }}" == *"pasteboard.co"* ]]; then
+          wget -t 3 -T 60 --no-check-certificate "${{ github.event.inputs.picture_link }}" -O logo.txt
+          real_logo="$(grep 'img data-src="' logo.txt | cut -d '"' -f 2)"
+          wget -t 3 -T 60 --no-check-certificate "${real_logo}" -O logo.png
+        else
+          wget -t 3 -T 60 --no-check-certificate "${{ github.event.inputs.picture_link }}" -O logo.png
+        fi
         if [ "$?" != "0" ]; then
           echo "::error::Failed to get ${{ github.event.inputs.picture_link }}"
           exit 1
