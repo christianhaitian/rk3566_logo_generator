@@ -16,7 +16,7 @@ For adding your own boot logo for ArkOS for supported rk3566 devices
 
 Notes:
 - Only images in .png format will work and are possible for use in this process
-- PNG logos for the RG353M/V/VS and RK2023 need to be in 640x480 resolution
+- PNG logos for the RG353M/V/VS and RK2023 devices need to be in 640x480 resolution
 - PNG logos for the RG503 need to be in 960x544 resolution
 - This process has successfully been tested with images loaded to [imgbb](https://imgbb.com/upload) and [pasteboard.co](https://pasteboard.co/)
 
