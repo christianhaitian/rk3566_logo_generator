@@ -8,7 +8,7 @@ For adding your own boot logo for ArkOS for supported rk3566 devices
 4. On the right side, Click on Run workflow.
 5. Select your Device
 6. Paste the HTML link to the png image that should be downloaded to generate the current kernel with your preferred logo.
-   - Images from [imgbb.com](https://github.com/christianhaitian/rk3566_logo_generator/edit/main/README.md#uploading-png-images-to-imgbbcom) or [pasteboard.co](https://github.com/christianhaitian/rk3566_logo_generator/edit/main/README.md#uploading-png-images-to-pasteboardco) are recommended for this process.  See instructions below about how to use either free site.
+   - Images from [imgbb.com](https://github.com/christianhaitian/rk3566_logo_generator#uploading-png-images-to-imgbbcom) or [pasteboard.co](https://github.com/christianhaitian/rk3566_logo_generator#uploading-png-images-to-pasteboardco) are recommended for this process.  See instructions below about how to use either free site.
 7. Wait 15-20 minutes or so.  If all goes well, The workflow should end with a green checkmark.
 8. Click on the workflow and scroll down tot he Artifacts section.
 9. Click on the image file and download it.
