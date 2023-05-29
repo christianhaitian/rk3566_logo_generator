@@ -1,7 +1,7 @@
 # rk3566_logo_generator
 For adding your own boot logo for ArkOS for rk3566 devices
 
-# Instructions for creating kernel with your custom logo
+# Instructions for creating a kernel with your custom logo
 1. Fork this repository
 2. From your forked repository, go to Actions.
 3. Click on **ArkOS Kernel with Logo Generator** under Actions on the left side of the screen.
