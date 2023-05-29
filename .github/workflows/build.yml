@@ -1,4 +1,4 @@
-# This is a basic workflow that is manually triggered to build an Image with an updated logo for ArkOS on RK3566 devices
+# This is a workflow that is manually triggered to build an Image with an updated logo for ArkOS on supported RK3566 devices
 
 name: ArkOS Kernel with Logo Generator
 
@@ -14,7 +14,7 @@ on:
         - RG503
         - RK2023
       picture_link:
-        description: 'HTML link to png file'
+        description: 'HTML link to your png file'
         required: true
 jobs:
   # This workflow contains a single job.
@@ -32,13 +32,18 @@ jobs:
       id: Build_kernel_with_new_logo
       shell: bash {0}
       run: |
+
         # Verify that html link provided is to a file ending in .png or is from ibb.co
         if [[ "${{ github.event.inputs.picture_link }}" != *.png ]] && [[ "${{ github.event.inputs.picture_link }}" != *.PNG ]] && [[ "${{ github.event.inputs.picture_link }}" != *"ibb.co"* ]]; then
           echo "::error::Link doesn't seem to contain a .png file"
           exit 1
         fi
+
+        # Install necessary kernel building and logo processing tools
         sudo apt -y update
         sudo apt -y install build-essential git lzop build-essential gcc bc libncurses5-dev libc6-i386 lib32stdc++6 zlib1g netpbm
+
+        # Clone the correct kernel repo for this kernel build
         if [[ "${{ github.event.inputs.device_unit }}" == "RG353M/V/VS" ]]; then
            whichgit="RG353VKernel"
            git clone --depth=1 --recursive https://github.com/christianhaitian/${whichgit}.git
@@ -49,14 +54,17 @@ jobs:
            whichgit="RG353VKernel"
            git clone --depth=1 --recursive https://github.com/christianhaitian/${whichgit}.git -b rk2023
         fi
-        echo "whichgit=$whichgit" >> $GITHUB_ENV
+
+        # Install the necessary toolchain for building the kernel
         mkdir -p ./prebuilts/gcc/linux-x86/aarch64/
         wget https://releases.linaro.org/components/toolchain/binaries/6.3-2017.05/aarch64-linux-gnu/gcc-linaro-6.3.1-2017.05-x86_64_aarch64-linux-gnu.tar.xz
         tar Jxvf gcc-linaro-6.3.1-2017.05-x86_64_aarch64-linux-gnu.tar.xz -C ./prebuilts/gcc/linux-x86/aarch64/
         cd ${whichgit}
-        # Check to see if this is a pasteboard.co link
-        # If it is a pasteboard.co link
+
+        # Check to see if this is a pasteboard.co or ibb.co link
+        # If it is a pasteboard.co or ibb.co link
         # we need to get the real logo link
+        # and attempt to process it.
         if [[ "${{ github.event.inputs.picture_link }}" == *"pasteboard.co"* ]]; then
           wget -t 3 -T 60 --no-check-certificate "${{ github.event.inputs.picture_link }}" -O logo.txt
           real_logo="$(grep 'img data-src="' logo.txt | cut -d '"' -f 2)"
@@ -72,12 +80,15 @@ jobs:
           echo "::error::Failed to get ${{ github.event.inputs.picture_link }}"
           exit 1
         fi
-        #cp ../cod_ghost.png .
+
+        # Process the downloaded logo into the format necessary for the kernel
         pngtopnm logo.png | ppmquant 224 | pnmnoraw > drivers/video/logo/logo_linux_clut224.ppm
         if [ "$?" != "0" ]; then
           echo "::error::${{ github.event.inputs.picture_link }} is not a compatible png file"
           exit 1
         fi
+
+        # If no errors, let's build the kernel and make it available as an artifact if successful
         make ARCH=arm64 rk3566_optimized_linux_defconfig && make ARCH=arm64 KERNEL_DTS=rk3566 KERNEL_CONFIG=rk3566_optimized_linux_defconfig -j2
         cp arch/arm64/boot/Image ../.
     - name: Get kernel artifact
@@ -85,5 +96,3 @@ jobs:
       with:
         name: image
         path: Image
-      env:
-        whichgit: ${{ env.whichgit }}
