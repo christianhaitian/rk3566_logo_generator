@@ -10,7 +10,7 @@ on:
         description: 'Choose your device'
         required: true
         options:
-        - RG353M/V/VS
+        - RG353
         - RG503
         - RK2023
       picture_link:
@@ -44,7 +44,7 @@ jobs:
         sudo apt -y install build-essential git lzop build-essential gcc bc libncurses5-dev libc6-i386 lib32stdc++6 zlib1g netpbm
 
         # Clone the correct kernel repo for this kernel build
-        if [[ "${{ github.event.inputs.device_unit }}" == "RG353M/V/VS" ]]; then
+        if [[ "${{ github.event.inputs.device_unit }}" == "RG353" ]]; then
            whichgit="RG353VKernel"
            git clone --depth=1 --recursive https://github.com/christianhaitian/${whichgit}.git
         elif [[ "${{ github.event.inputs.device_unit }}" == "RG503" ]]; then
