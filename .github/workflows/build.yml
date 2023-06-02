@@ -114,7 +114,7 @@ jobs:
           echo "::error::${{ github.event.inputs.picture_link }} is not a compatible png file for the boot logo"
           exit 1
         fi
-        if [[ "${{ github.event.inputs.update_hdmi }}" == "Yes" ]]; then
+        if [[ "${{ github.event.inputs.update_hdmi }}" == "Yep" ]]; then
           if [ -f "hdmi_logo.png" ]; then
             pngtopnm hdmi_logo.png | ppmquant 224 | pnmnoraw > drivers/video/logo/logo_hdmi_clut224.ppm
             if [ "$?" != "0" ]; then
