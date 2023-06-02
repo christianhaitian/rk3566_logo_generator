@@ -19,7 +19,7 @@ on:
       update_hdmi:
         type: choice
         description: 'Would you like to update the hdmi out logo as well?'
-        required: false
+        required: true
         options:
         - No
         - Yes
