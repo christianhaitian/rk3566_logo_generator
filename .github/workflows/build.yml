@@ -16,6 +16,16 @@ on:
       picture_link:
         description: 'HTML link to your png file'
         required: true
+      update_hdmi:
+        type: choice
+        description: 'Would you like to update the hdmi out logo as well?'
+        required: false
+        options:
+        - No
+        - Yes
+      hdmi_picture_link:
+        description: 'HTML link to your png file for hdmi out'
+        required: false
 jobs:
   # This workflow contains a single job.
   build:
@@ -41,7 +51,7 @@ jobs:
 
         # Install necessary kernel building and logo processing tools
         sudo apt -y update
-        sudo apt -y install build-essential git lzop build-essential gcc bc libncurses5-dev libc6-i386 lib32stdc++6 zlib1g netpbm
+        sudo apt -y install build-essential git lzop build-essential gcc bc libncurses5-dev libc6-i386 lib32stdc++6 zlib1g netpbm imgp
 
         # Clone the correct kernel repo for this kernel build
         if [[ "${{ github.event.inputs.device_unit }}" == "RG353" ]]; then
@@ -80,12 +90,45 @@ jobs:
           echo "::error::Failed to get ${{ github.event.inputs.picture_link }}"
           exit 1
         fi
+        if [ ! -z "${{ github.event.inputs.hdmi_picture_link }}" ]; then
+          if [[ "${{ github.event.inputs.hdmi_picture_link }}" == *"pasteboard.co"* ]]; then
+            wget -t 3 -T 60 --no-check-certificate "${{ github.event.inputs.hdmi_picture_link }}" -O hdmi_logo.txt
+            real_logo="$(grep 'img data-src="' hdmi_logo.txt | cut -d '"' -f 2)"
+            wget -t 3 -T 60 --no-check-certificate "${real_logo}" -O hdmi_logo.png
+          elif [[ "${{ github.event.inputs.hdmi_picture_link }}" == *"ibb.co"* ]]; then
+            wget -t 3 -T 60 --no-check-certificate "${{ github.event.inputs.hdmi_picture_link }}" -O hdmi_logo.txt
+            real_logo="$(grep 'og:image" content="' hdmi_logo.txt | cut -d '"' -f 4)"
+            wget -t 3 -T 60 --no-check-certificate "${real_logo}" -O hdmi_logo.png
+          else
+            wget -t 3 -T 60 --no-check-certificate "${{ github.event.inputs.hdmi_picture_link }}" -O hdmi_logo.png
+          fi
+          if [ "$?" != "0" ]; then
+            echo "::error::Failed to get ${{ github.event.inputs.hdmi_picture_link }}"
+            exit 1
+          fi
+        fi
 
         # Process the downloaded logo into the format necessary for the kernel
         pngtopnm logo.png | ppmquant 224 | pnmnoraw > drivers/video/logo/logo_linux_clut224.ppm
         if [ "$?" != "0" ]; then
-          echo "::error::${{ github.event.inputs.picture_link }} is not a compatible png file"
+          echo "::error::${{ github.event.inputs.picture_link }} is not a compatible png file for the boot logo"
           exit 1
+        fi
+        if [[ "${{ github.event.inputs.update_hdmi }}" == "Yes" ]]; then
+          if [ -f "hdmi_logo.png" ]; then
+            pngtopnm hdmi_logo.png | ppmquant 224 | pnmnoraw > drivers/video/logo/logo_hdmi_clut224.ppm
+            if [ "$?" != "0" ]; then
+              echo "::error::${{ github.event.inputs.hdmi_picture_link }} is not a compatible png file for the boot logo"
+              exit 1
+            fi
+          else
+            imgp -nx 1280x720 logo.png
+            pngtopnm logo_IMGP.png | ppmquant 224 | pnmnoraw > drivers/video/logo/logo_hdmi_clut224.ppm
+            if [ "$?" != "0" ]; then
+              echo "::error::${{ github.event.inputs.picture_link }} is not a compatible png file for the hdmi output logo"
+              exit 1
+            fi
+          fi
         fi
 
         # If no errors, let's build the kernel and make it available as an artifact if successful
