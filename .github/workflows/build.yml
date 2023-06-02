@@ -19,10 +19,10 @@ on:
       update_hdmi:
         type: choice
         description: 'Would you like to update the hdmi out logo as well?'
-        required: true
+        required: false
         options:
-        - No
-        - Yes
+        - Nope
+        - Yep
       hdmi_picture_link:
         description: 'HTML link to your png file for hdmi out'
         required: false
