@@ -19,6 +19,7 @@ For adding your own boot logo for ArkOS for supported rk3566 devices
 Notes:
 - Only images in .png format will work and are possible for use in this process
 - PNG logos for the RG353M/V/VS and RK2023 devices Must be 640 pixels in width and 480 pixels in height
+- PNG logos for the RGB30 devices Must be 720 pixels in width and 720 pixels in height
 - PNG logos for the RG503 must be 960 pixels in width and 544 pixels in height
 - If you'd like to update the logo shown using hdmi out as well, you'll need to select Yes in the **Would you like to update the hdmi out logo as well?** question.
   - The hdmi logo must be 1280 pixels in width and 720 pixels in height.
