@@ -12,6 +12,7 @@ on:
         options:
         - RG353
         - RG503
+        - RGB30
         - RK2023
       picture_link:
         description: 'HTML link to your png file'
