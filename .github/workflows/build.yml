@@ -133,7 +133,11 @@ jobs:
         fi
 
         # If no errors, let's build the kernel and make it available as an artifact if successful
-        make ARCH=arm64 rk3566_optimized_linux_defconfig && make ARCH=arm64 KERNEL_DTS=rk3566 KERNEL_CONFIG=rk3566_optimized_linux_defconfig -j2
+        if [[ "${{ github.event.inputs.device_unit }}" == "RK2023" ]] || [[ "${{ github.event.inputs.device_unit }}" == "RGB30" ]]; then
+          make ARCH=arm64 rk3566_optimized_with_wifi_linux_defconfig && make ARCH=arm64 KERNEL_DTS=rk3566 KERNEL_CONFIG=rk3566_optimized_with_wifi_linux_defconfig -j2
+        else
+          make ARCH=arm64 rk3566_optimized_linux_defconfig && make ARCH=arm64 KERNEL_DTS=rk3566 KERNEL_CONFIG=rk3566_optimized_linux_defconfig -j2
+        fi
         cp arch/arm64/boot/Image ../.
     - name: Get kernel artifact
       uses: actions/upload-artifact@v3
