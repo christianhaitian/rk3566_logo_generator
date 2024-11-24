@@ -140,7 +140,7 @@ jobs:
         fi
         cp arch/arm64/boot/Image ../.
     - name: Get kernel artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: image_${{ github.event.inputs.device_unit }}
         path: Image
