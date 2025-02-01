@@ -21,6 +21,7 @@ Notes:
 - PNG logos for the RG353M/V/VS and RK2023 devices must be 640 pixels in width and 480 pixels in height
 - PNG logos for the RGB30 device must be 720 pixels in width and 720 pixels in height
 - PNG logos for the RG503 must be 960 pixels in width and 544 pixels in height
+- PNG logos for the RGB20 Pro device must be 1024 pixels in width and 768 pixels in height
 - If you'd like to update the logo shown using hdmi out as well, you'll need to select Yes in the **Would you like to update the hdmi out logo as well?** question.
   - The hdmi logo must be 1280 pixels in width and 720 pixels in height.
   - If a logo source for the hdmi out is not provided, this process will resize the first logo provided.  Results may vary with it.
