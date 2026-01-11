@@ -1,5 +1,5 @@
 # rk3566_logo_generator
-For adding your own boot logo for ArkOS for supported rk3566 devices
+For adding your own boot logo for dArkOS and ArkOS for supported rk3566 devices
 
 # Instructions for creating a kernel with your custom logo
 1. Fork this repository
