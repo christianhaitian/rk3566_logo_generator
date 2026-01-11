@@ -1,4 +1,4 @@
-# This is a workflow that is manually triggered to build an Image with an updated logo for ArkOS on supported RK3566 devices
+# This is a workflow that is manually triggered to build an Image with an updated logo for dArkOS and ArkOS on supported RK3566 devices
 
 name: ArkOS Kernel with Logo Generator
 
