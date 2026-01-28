@@ -69,7 +69,7 @@ jobs:
 
         # Install the necessary toolchain for building the kernel
         mkdir -p ./prebuilts/gcc/linux-x86/aarch64/
-        git clone --depth=1 https://github.com/christianhaitian/gcc-linaro-6.3.1-2017.05-x86_64_aarch64-linux-gnu.tar.xz.git ./prebuilts/gcc/linux-x86/aarch64
+        git clone --depth=1 https://github.com/christianhaitian/gcc-linaro-6.3.1-2017.05-x86_64_aarch64-linux-gnu.git ./prebuilts/gcc/linux-x86/aarch64
         cd ${whichgit}
 
         # Check to see if this is a pasteboard.co or ibb.co link
