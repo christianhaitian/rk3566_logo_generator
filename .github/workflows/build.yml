@@ -1,6 +1,6 @@
 # This is a workflow that is manually triggered to build an Image with an updated logo for dArkOS and ArkOS on supported RK3566 devices
 
-name: ArkOS Kernel with Logo Generator
+name: dArkOS Kernel with Logo Generator
 
 on:
   workflow_dispatch:
@@ -56,16 +56,7 @@ jobs:
         sudo apt -y install build-essential git lzop build-essential gcc bc libncurses5-dev libc6-i386 lib32stdc++6 zlib1g netpbm imgp
 
         # Clone the correct kernel repo for this kernel build
-        if [[ "${{ github.event.inputs.device_unit }}" == "RG353" ]]; then
-           whichgit="RG353VKernel"
-           git clone --depth=1 --recursive https://github.com/christianhaitian/${whichgit}.git
-        elif [[ "${{ github.event.inputs.device_unit }}" == "RG503" ]]; then
-           whichgit="rg503Kernel"
-           git clone --depth=1 --recursive https://github.com/christianhaitian/${whichgit}.git
-        else
-           whichgit="RG353VKernel"
-           git clone --depth=1 --recursive https://github.com/christianhaitian/${whichgit}.git -b rk2023
-        fi
+        https://github.com/christianhaitian/kernel_5_10_226.git
 
         # Install the necessary toolchain for building the kernel
         mkdir -p ./prebuilts/gcc/linux-x86/aarch64/gcc-linaro-6.3.1-2017.05-x86_64_aarch64-linux-gnu/
@@ -133,11 +124,7 @@ jobs:
         fi
 
         # If no errors, let's build the kernel and make it available as an artifact if successful
-        if [[ "${{ github.event.inputs.device_unit }}" == "RK2023" ]] || [[ "${{ github.event.inputs.device_unit }}" == "RGB30" ]] || [[ "${{ github.event.inputs.device_unit }}" == "RGB20PRO" ]]; then
-          make ARCH=arm64 rk3566_optimized_with_wifi_linux_defconfig && make ARCH=arm64 KERNEL_DTS=rk3566 KERNEL_CONFIG=rk3566_optimized_with_wifi_linux_defconfig -j2
-        else
-          make ARCH=arm64 rk3566_optimized_linux_defconfig && make ARCH=arm64 KERNEL_DTS=rk3566 KERNEL_CONFIG=rk3566_optimized_linux_defconfig -j2
-        fi
+        make ARCH=arm64 rk3566_optimized_linux_defconfig && make ARCH=arm64 KERNEL_DTS=rk3566 KERNEL_CONFIG=rk3566_optimized_linux_defconfig -j2
         cp arch/arm64/boot/Image ../.
     - name: Get kernel artifact
       uses: actions/upload-artifact@v4
