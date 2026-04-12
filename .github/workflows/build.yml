@@ -56,7 +56,7 @@ jobs:
         sudo apt -y install build-essential git lzop build-essential gcc bc libncurses5-dev libc6-i386 lib32stdc++6 zlib1g netpbm imgp
 
         # Clone the correct kernel repo for this kernel build
-        git clone --depth=1 https://github.com/christianhaitian/kernel_5_10_226.git
+        git clone --recursive --depth=1 https://github.com/christianhaitian/kernel_5_10_226.git
 
         # Install the necessary toolchain for building the kernel
         mkdir -p ./prebuilts/gcc/linux-x86/aarch64/gcc-linaro-6.3.1-2017.05-x86_64_aarch64-linux-gnu/
