@@ -10,6 +10,7 @@ on:
         description: 'Choose your device'
         required: true
         options:
+        - MiniLoong
         - RG353
         - RG503
         - RGB30
