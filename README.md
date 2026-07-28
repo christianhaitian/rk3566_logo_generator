@@ -7,7 +7,7 @@ For adding your own boot logo for dArkOS for supported rk3566 devices
 1. Fork this repository
 2. From your forked repository, go to Actions.
 3. Enable Workflows.
-4. Click on **ArkOS Kernel with Logo Generator** under Actions on the left side of the screen.
+4. Click on **dArkOS Kernel with Logo Generator** under Actions on the left side of the screen.
 5. On the right side, Click on Run workflow.
 6. Select your Device.
 7. Paste the HTML link to the png image that should be downloaded to generate the current kernel with your preferred logo.
