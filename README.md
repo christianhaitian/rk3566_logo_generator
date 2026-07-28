@@ -20,6 +20,7 @@ For adding your own boot logo for dArkOS for supported rk3566 devices
 
 Notes:
 - Only images in .png format will work and are possible for use in this process
+- PNG logos for the Miniloong Pocket 1 device must be 960 pixels in width and 720 pixels in height
 - PNG logos for the RG353M/V/VS and RK2023 devices must be 640 pixels in width and 480 pixels in height
 - PNG logos for the RGB30 device must be 720 pixels in width and 720 pixels in height
 - PNG logos for the RG503 must be 960 pixels in width and 544 pixels in height
